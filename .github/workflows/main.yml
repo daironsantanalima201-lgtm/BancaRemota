@@ -29,14 +29,15 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build
 
-      - name: Preparar archivo de compilacion
+      - name: Crear estructura IPA
         run: |
-          cd build/Build/Products/Release-iphoneos
-          ditto -c -k --sequesterRsrc --keepParent BancaRemota.app BancaRemota.zip
+          mkdir Payload
+          cp -R build/Build/Products/Release-iphoneos/BancaRemota.app Payload/
+          zip -r BancaRemota.ipa Payload
 
       - name: Guardar compilacion
         uses: actions/upload-artifact@v4
         with:
-          name: BancaRemota-sin-firma
-          path: build/Build/Products/Release-iphoneos/BancaRemota.zip
+          name: BancaRemota-IPA
+          path: BancaRemota.ipa
           retention-days: 7
